@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 
 const { User } = require('../models/user');
 const { EmailToken } = require('../models/emailToken');
-const { userRegistraion } = require('../validations/userValidation');
+const { userRegistraion, userUpdateRegistraion } = require('../validations/userValidation');
 
 const emailConfirmation = require('../utils/emailConfirmation');
 const uploadFileMiddleware = require('../middlewares/fileUpload');
@@ -17,7 +17,7 @@ const router = express.Router();
 
 
 
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
     const users = await User.find();
     res.send(users);
 });
@@ -51,6 +51,23 @@ router.post('/', async (req, res) => {
     res.status(200).send(user);
 });
 
+
+router.put('/', auth, async (req, res) => {
+    const { error } = userUpdateRegistraion(req.body);
+    if(error) return res.status(400).send(error.details[0].message);
+
+    const user = await User.findByIdAndUpdate({_id: req.user._id},
+        {
+            $set: {
+                first_name: req.body.first_name,
+                last_name: req.body.last_name,
+                phone: req.body.phone
+            }
+        }  
+    ).select('-password');
+    res.send(user);
+});
+
 router.get('/confirmation/:email/:token', async (req, res) => {
     const token = await EmailToken.findOne({token: req.params.token})
     if(!token) return res.status(404).send('Your verification link may have expired. Please click on resend for verify your Email.')
@@ -68,6 +85,8 @@ router.get('/confirmation/:email/:token', async (req, res) => {
     res.status(200).send('Your account has been successfully verified');
 
 });
+
+
 
 
 router.get('/resendlink/:email', async (req, res) => {
@@ -103,7 +122,7 @@ router.get('/me', auth, async(req, res) => {
     const user = await User.findById(req.user._id).select('-password');
     console.log(user);
     res.send(user);
-})
+});
 
 
 

@@ -25,6 +25,18 @@ const userLogin = (data) => {
 }
 
 
+const userUpdateRegistraion = (data) => {
+    const schema = Joi.object({
+        first_name: Joi.string().required().min(5).max(50),
+        last_name: Joi.string().required().min(5).max(50),
+        phone: Joi.string().required().min(5).max(50),
+    });
+
+    return schema.validate(data);
+}
+
+
 
 module.exports.userRegistraion = userRegistraion;
 module.exports.userLogin = userLogin;
+module.exports.userUpdateRegistraion = userUpdateRegistraion;
