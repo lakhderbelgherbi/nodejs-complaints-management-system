@@ -33,7 +33,4 @@ module.exports = async function (user, name, host){
         const sendMail = await smtpTransport.sendMail(mailOptions);
         if(!sendMail) res.status(500).send('Technical Issue!, Please click on resend for verify your Email.');
 
-        console.log(sendMail);
-
-
 }

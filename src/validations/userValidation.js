@@ -36,7 +36,37 @@ const userUpdateRegistraion = (data) => {
 }
 
 
+const passwordReset = (data) => {
+    const schema = Joi.object({
+        email: Joi.string().required().min(5).max(255).email()
+    });
+
+    return schema.validate(data);
+}
+
+
+const passwordResetFormValidation = (data) => {
+    const schema = Joi.object({
+        password: Joi.string().required().min(5).max(255)
+    });
+
+    return schema.validate(data);
+}
+
+const changePasswordValidation = (data) => {
+    const schema = Joi.object({
+        password: Joi.string().required().min(5).max(255)
+    });
+
+    return schema.validate(data);
+}
+
+
+
 
 module.exports.userRegistraion = userRegistraion;
 module.exports.userLogin = userLogin;
 module.exports.userUpdateRegistraion = userUpdateRegistraion;
+module.exports.passwordReset = passwordReset;
+module.exports.passwordResetFormValidation = passwordResetFormValidation;
+module.exports.changePasswordValidation = changePasswordValidation;
