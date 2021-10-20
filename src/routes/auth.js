@@ -20,7 +20,7 @@ router.post('/', async (req, res) => {
 
     if(!user.isVerified) return res.status(401).send('Your email has not been verified!');
 
-    const token = jwt.sign({_id: user._id}, process.env.JWT_SECRET_KEY);
+    const token = jwt.sign({_id: user._id, role: user.role}, process.env.JWT_SECRET_KEY);
     res.header('x-auth-token', token).header('access-control-expose-headers', 'x-auth-token').send(user);
 
 });

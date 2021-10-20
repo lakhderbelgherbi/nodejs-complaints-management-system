@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto-js');
 const nodemailer = require('nodemailer');
+const jwt = require('jsonwebtoken');
 // const multer =require('multer');
 
 
@@ -9,10 +10,12 @@ const { User } = require('../models/user');
 const { EmailToken } = require('../models/emailToken');
 const { userRegistraion, userUpdateRegistraion, passwordReset, passwordResetFormValidation, changePasswordValidation } = require('../validations/userValidation');
 
-const emailConfirmation = require('../utils/emailConfirmation');
+const emailConfirmation = require('../helpers/emailConfirmation');
 const uploadFileMiddleware = require('../middlewares/fileUpload');
 const auth = require('../middlewares/auth');
-const resizeImage = require('../utils/resizeImage');
+const resizeImage = require('../helpers/resizeImage');
+const admin = require('../middlewares/admin');
+const { exist } = require('joi');
 
 
 const router = express.Router();
@@ -50,9 +53,7 @@ router.post('/', async (req, res) => {
         const username = user.first_name+' '+user.last_name;
         emailConfirmation(user, username, req.headers.host);
 
-
-
-        res.status(200).send(user);
+         res.status(200).send('Please check your email, We hope that you confirm your subscription');
 });
 
 
@@ -74,7 +75,7 @@ router.put('/', auth, async (req, res) => {
 
 
 router.get('/confirmation/:email/:token', async (req, res) => {
-    const token = await EmailToken.findOne({token: req.params.token})
+    const token = await EmailToken.findOne({token: req.params.token});
     if(!token) return res.status(404).send('Your verification link may have expired. Please click on resend for verify your Email.')
 
     
@@ -220,9 +221,24 @@ router.put('/changepassword', auth, async (req, res) => {
 
 router.get('/me', auth, async(req, res) => {
     const user = await User.findById(req.user._id).select('-password');
-    console.log(user);
     res.send(user);
 });
+
+
+
+router.delete('/:id', [auth, admin], async (req, res) => {
+    const user = await User.findById(req.params.id);
+    if(!user) return res.status(404).send('The user with the given ID was not fount!');
+
+    await user.delete();
+
+
+    res.send(user);
+
+});
+
+
+
 
 
 

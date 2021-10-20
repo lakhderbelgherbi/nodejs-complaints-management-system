@@ -33,8 +33,9 @@ const userSchema = mongoose.Schema({
         required: true,
     },
     role: {
-        type: Array,
-        default: [],
+        type: String,
+        default: 'agent',
+        enum: ['admin', 'teamLeader', 'agent']
     },
     team:{
         type: String,
@@ -51,4 +52,4 @@ const userSchema = mongoose.Schema({
 const User = new mongoose.model('User', userSchema);
 
 module.exports.userSchema = userSchema;
-module.exports.User = User;
+module.exports.User       = User;
