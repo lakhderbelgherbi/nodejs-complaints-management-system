@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken');
 
 const { User } = require('../models/user');
 const { EmailToken } = require('../models/emailToken');
-const { userRegistraion, userUpdateRegistraion, passwordReset, passwordResetFormValidation, changePasswordValidation } = require('../validations/userValidation');
+const { userRegistraion, userUpdateRegistraion, passwordReset, passwordResetFormValidation, changePasswordValidation, userSetRoleValidation } = require('../validations/userValidation');
 
 const emailConfirmation = require('../helpers/emailConfirmation');
 const uploadFileMiddleware = require('../middlewares/fileUpload');
@@ -238,7 +238,21 @@ router.delete('/:id', [auth, admin], async (req, res) => {
 });
 
 
+router.put('/:id/setrole', async(req, res) => {
+    const { error } = userSetRoleValidation(req.body);
+    if(error) return res.status(400).send(error.details[0].message);
 
+    let user = await User.findByIdAndUpdate({_id: req.params.id}, {
+        $set: {
+            role: req.body.role
+        }
+    });
+
+    if(!user) return res.status(404).send('The user with the given ID was not found');
+
+    return res.send(user);
+
+});
 
 
 

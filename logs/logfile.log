@@ -53,3 +53,38 @@
 {"level":"info","message":"Successfuly connected to mongoDB ...."}
 {"level":"info","message":"App run on port 3000"}
 {"level":"info","message":"Successfuly connected to mongoDB ...."}
+{"level":"info","message":"App run on port 3000"}
+{"level":"info","message":"Successfuly connected to mongoDB ...."}
+{"level":"info","message":"App run on port 3000"}
+{"level":"info","message":"Successfuly connected to mongoDB ...."}
+{"level":"info","message":"App run on port 3000"}
+{"level":"info","message":"Successfuly connected to mongoDB ...."}
+{"level":"info","message":"App run on port 3000"}
+{"level":"info","message":"Successfuly connected to mongoDB ...."}
+{"level":"info","message":"App run on port 3000"}
+{"level":"info","message":"Successfuly connected to mongoDB ...."}
+{"level":"info","message":"App run on port 3000"}
+{"level":"info","message":"Successfuly connected to mongoDB ...."}
+{"level":"info","message":"App run on port 3000"}
+{"level":"info","message":"Successfuly connected to mongoDB ...."}
+{"level":"info","message":"App run on port 3000"}
+{"level":"info","message":"Successfuly connected to mongoDB ...."}
+{"level":"error","message":"userSetRoleValidation is not defined userSetRoleValidation is not defined","stack":"ReferenceError: userSetRoleValidation is not defined\n    at C:\\Users\\Lakhder\\Desktop\\complaints-management-system\\src\\routes\\users.js:242:23\n    at Layer.handle [as handle_request] (C:\\Users\\Lakhder\\Desktop\\complaints-management-system\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (C:\\Users\\Lakhder\\Desktop\\complaints-management-system\\node_modules\\express\\lib\\router\\route.js:137:13)\n    at Route.dispatch (C:\\Users\\Lakhder\\Desktop\\complaints-management-system\\node_modules\\express\\lib\\router\\route.js:112:3)\n    at Layer.handle [as handle_request] (C:\\Users\\Lakhder\\Desktop\\complaints-management-system\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at C:\\Users\\Lakhder\\Desktop\\complaints-management-system\\node_modules\\express\\lib\\router\\index.js:281:22\n    at param (C:\\Users\\Lakhder\\Desktop\\complaints-management-system\\node_modules\\express\\lib\\router\\index.js:354:14)\n    at param (C:\\Users\\Lakhder\\Desktop\\complaints-management-system\\node_modules\\express\\lib\\router\\index.js:365:14)\n    at Function.process_params (C:\\Users\\Lakhder\\Desktop\\complaints-management-system\\node_modules\\express\\lib\\router\\index.js:410:3)\n    at next (C:\\Users\\Lakhder\\Desktop\\complaints-management-system\\node_modules\\express\\lib\\router\\index.js:275:10)"}
+{"level":"info","message":"App run on port 3000"}
+{"level":"info","message":"Successfuly connected to mongoDB ...."}
+{"level":"info","message":"App run on port 3000"}
+{"level":"info","message":"Successfuly connected to mongoDB ...."}
+{"level":"error","message":"userSetRoleValidation is not defined userSetRoleValidation is not defined","stack":"ReferenceError: userSetRoleValidation is not defined\n    at C:\\Users\\Lakhder\\Desktop\\complaints-management-system\\src\\routes\\users.js:242:23\n    at Layer.handle [as handle_request] (C:\\Users\\Lakhder\\Desktop\\complaints-management-system\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (C:\\Users\\Lakhder\\Desktop\\complaints-management-system\\node_modules\\express\\lib\\router\\route.js:137:13)\n    at Route.dispatch (C:\\Users\\Lakhder\\Desktop\\complaints-management-system\\node_modules\\express\\lib\\router\\route.js:112:3)\n    at Layer.handle [as handle_request] (C:\\Users\\Lakhder\\Desktop\\complaints-management-system\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at C:\\Users\\Lakhder\\Desktop\\complaints-management-system\\node_modules\\express\\lib\\router\\index.js:281:22\n    at param (C:\\Users\\Lakhder\\Desktop\\complaints-management-system\\node_modules\\express\\lib\\router\\index.js:354:14)\n    at param (C:\\Users\\Lakhder\\Desktop\\complaints-management-system\\node_modules\\express\\lib\\router\\index.js:365:14)\n    at Function.process_params (C:\\Users\\Lakhder\\Desktop\\complaints-management-system\\node_modules\\express\\lib\\router\\index.js:410:3)\n    at next (C:\\Users\\Lakhder\\Desktop\\complaints-management-system\\node_modules\\express\\lib\\router\\index.js:275:10)"}
+{"level":"info","message":"App run on port 3000"}
+{"level":"info","message":"Successfuly connected to mongoDB ...."}
+{"level":"info","message":"App run on port 3000"}
+{"level":"info","message":"Successfuly connected to mongoDB ...."}
+{"level":"info","message":"App run on port 3000"}
+{"level":"info","message":"Successfuly connected to mongoDB ...."}
+{"level":"info","message":"App run on port 3000"}
+{"level":"info","message":"Successfuly connected to mongoDB ...."}
+{"kind":"ObjectId","level":"error","message":"Cast to ObjectId failed for value \"616feaa4d4ec6a60f635f93\" (type string) at path \"_id\" for model \"User\" Cast to ObjectId failed for value \"616feaa4d4ec6a60f635f93\" (type string) at path \"_id\" for model \"User\"","path":"_id","reason":{},"stack":"CastError: Cast to ObjectId failed for value \"616feaa4d4ec6a60f635f93\" (type string) at path \"_id\" for model \"User\"\n    at model.Query.exec (C:\\Users\\Lakhder\\Desktop\\complaints-management-system\\node_modules\\mongoose\\lib\\query.js:4545:21)\n    at model.Query.Query.then (C:\\Users\\Lakhder\\Desktop\\complaints-management-system\\node_modules\\mongoose\\lib\\query.js:4644:15)\n    at processTicksAndRejections (internal/process/task_queues.js:97:5)","stringValue":"\"616feaa4d4ec6a60f635f93\"","value":"616feaa4d4ec6a60f635f93","valueType":"string"}
+{"level":"info","message":"App run on port 3000"}
+{"level":"info","message":"Successfuly connected to mongoDB ...."}
+{"level":"info","message":"App run on port 3000"}
+{"level":"info","message":"Successfuly connected to mongoDB ...."}
