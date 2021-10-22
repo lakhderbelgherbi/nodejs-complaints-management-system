@@ -1,4 +1,5 @@
 const Joi = require('joi');
+Joi.objectId = require('joi-objectid')(Joi)
 
 const userRegistraion = (data) => {
     const schema = Joi.object({
@@ -73,6 +74,16 @@ const userSetRoleValidation = (data) => {
 
 
 
+const userSetTeamValidation = (data) => {
+    const schema = Joi.object({
+        team: Joi.objectId().required()
+    });
+
+    return schema.validate(data);
+}
+
+
+
 
 
 module.exports.userRegistraion = userRegistraion;
@@ -82,3 +93,4 @@ module.exports.passwordReset = passwordReset;
 module.exports.passwordResetFormValidation = passwordResetFormValidation;
 module.exports.changePasswordValidation = changePasswordValidation;
 module.exports.userSetRoleValidation = userSetRoleValidation;
+module.exports.userSetTeamValidation = userSetTeamValidation;

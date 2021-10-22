@@ -9,6 +9,7 @@ const users = require('./routes/users');
 const auth = require('./routes/auth');
 const customers = require('./routes/customers');
 const teams = require('./routes/teams');
+const tickets = require('./routes/tickets');
 
 // Init express app
 const app = express();
@@ -27,6 +28,7 @@ app.use('/api/users', users);
 app.use('/api/auth', auth);
 app.use('/api/customers', customers);
 app.use('/api/teams', teams);
+app.use('/api/tickets', tickets)
 
 // Async Errors handler 
 app.use(error);

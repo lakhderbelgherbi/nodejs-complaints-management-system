@@ -3,7 +3,7 @@ const nodemailer = require('nodemailer');
 const { EmailToken } = require('../models/emailToken');
 
 
-module.exports = async function (user, name, host){
+module.exports = async function (user, subject, emailBody){
 
         const token = crypto.lib.WordArray.random(128 / 8);
 
@@ -19,16 +19,12 @@ module.exports = async function (user, name, host){
             }
         });
 
-
-        
-        const emailToken = new EmailToken({_userId: user._id, token: token});
-        await emailToken.save(); 
-
         const  mailOptions = { 
             from: 'no-reply@colmplaints.com', 
             to: user.email, 
-            subject: 'Account Verification Link', 
-            text: 'Hello '+ name +',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + host + '\/api\/users\/confirmation\/' + user.email + '\/' + emailToken.token + '\n\nThank You!\n' };
+            subject: subject, 
+            text: emailBody
+        };
         
         const sendMail = await smtpTransport.sendMail(mailOptions);
         if(!sendMail) res.status(500).send('Technical Issue!, Please click on resend for verify your Email.');

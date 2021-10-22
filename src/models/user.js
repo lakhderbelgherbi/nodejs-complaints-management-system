@@ -37,8 +37,16 @@ const userSchema = mongoose.Schema({
         default: 'agent',
         enum: ['admin', 'teamLeader', 'agent']
     },
-    team:{
-        type: String,
+    team: {
+        type: new mongoose.Schema({
+            team_name: {
+                type: String,
+                require: true,
+                minlength: 3,
+                maxlength: 255,
+                unique: true
+            }
+        })
     },
     photo: {
         type:String,

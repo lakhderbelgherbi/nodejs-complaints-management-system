@@ -3,19 +3,20 @@ const bcrypt = require('bcrypt');
 const crypto = require('crypto-js');
 const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 // const multer =require('multer');
 
 
 const { User } = require('../models/user');
 const { EmailToken } = require('../models/emailToken');
-const { userRegistraion, userUpdateRegistraion, passwordReset, passwordResetFormValidation, changePasswordValidation, userSetRoleValidation } = require('../validations/userValidation');
+const { userRegistraion, userUpdateRegistraion, passwordReset, passwordResetFormValidation, changePasswordValidation, userSetRoleValidation, userSetTeamValidation } = require('../validations/userValidation');
 
 const emailConfirmation = require('../helpers/emailConfirmation');
 const uploadFileMiddleware = require('../middlewares/fileUpload');
 const auth = require('../middlewares/auth');
 const resizeImage = require('../helpers/resizeImage');
 const admin = require('../middlewares/admin');
-const { exist } = require('joi');
+const { Team } = require('../models/team');
 
 
 const router = express.Router();
@@ -49,9 +50,15 @@ router.post('/', async (req, res) => {
         user.password = await bcrypt.hash(user.password, salt);
 
         await user.save();
+
+        const token = crypto.lib.WordArray.random(128 / 8);
+        const emailToken = new EmailToken({_userId: user._id, token: token});
+        await emailToken.save(); 
     
         const username = user.first_name+' '+user.last_name;
-        emailConfirmation(user, username, req.headers.host);
+        const subject = 'Account Verification Link';
+        const emailBody = 'Hello '+ username +',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/api\/users\/confirmation\/' + user.email + '\/' + emailToken.token + '\n\nThank You!\n'
+        emailConfirmation(user, subject, emailBody);
 
          res.status(200).send('Please check your email, We hope that you confirm your subscription');
 });
@@ -121,36 +128,19 @@ router.post('/resetPassword', async (req, res) => {
 
     if(!user.isVerified) return res.status(401).send('Your email has not been verified!. Please activate your account');
 
-    
+    const token=crypto.lib.WordArray.random(128 / 8);
+
     let emailToken = await EmailToken.findOne({ email: user._id.toString() });
     if (!emailToken) {
         emailToken = await new EmailToken({
             _userId: user._id.toString(),
-            token: crypto.lib.WordArray.random(128 / 8),
+            token: token,
         }).save();
     }
 
-
-    // //   Send a confirmation mail!!!
-      const smtpTransport = nodemailer.createTransport({
-        service: process.env.EMAIL_SERVICE,
-        host: process.env.EMAIL_HOST,
-        port: process.env.EMAIL_PORT,
-        secure: false, // true for 465, false for other ports
-        auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASSWORD
-        }
-    });
-
-    const  mailOptions = { 
-        from: 'no-reply@colmplaints.com', 
-        to: user.email, 
-        subject: 'Reset Password', 
-        text: 'Hello '+ user.email +',\n\n' + 'Please click on the link below to reset your password: \nhttp:\/\/' + req.headers.host + '\/api\/users\/passwordresetform\/' + user.email + '\/' + emailToken.token + '\n\nThank You!\n' };
-    
-    const sendMail = await smtpTransport.sendMail(mailOptions);
-    if(!sendMail) res.status(500).send('Technical Issue!, Please click on resend for verify your Email.');
+    const subject = 'Reset Password';
+    const emailBody = 'Hello '+ user.email +',\n\n' + 'Please click on the link below to reset your password: \nhttp:\/\/' + req.headers.host + '\/api\/users\/passwordresetform\/' + user.email + '\/' + emailToken.token + '\n\nThank You!\n'
+    emailConfirmation(user, subject, emailBody);
 
     res.send("password reset link sent to your email account");
 
@@ -238,9 +228,12 @@ router.delete('/:id', [auth, admin], async (req, res) => {
 });
 
 
-router.put('/:id/setrole', async(req, res) => {
+router.put('/:id/setrole', [auth, admin], async(req, res) => {
     const { error } = userSetRoleValidation(req.body);
     if(error) return res.status(400).send(error.details[0].message);
+
+    const isValidId = mongoose.Types.ObjectId.isValid(req.params.id);
+    if(!isValidId) return res.status(400).send('Please check ID');
 
     let user = await User.findByIdAndUpdate({_id: req.params.id}, {
         $set: {
@@ -251,7 +244,30 @@ router.put('/:id/setrole', async(req, res) => {
     if(!user) return res.status(404).send('The user with the given ID was not found');
 
     return res.send(user);
+});
 
+
+router.put('/:id/setteam', [auth, admin], async(req, res) => {
+    const { error } = userSetTeamValidation(req.body);
+    if(error) return res.status(400).send(error.details[0].message);
+
+    const isValidId = mongoose.Types.ObjectId.isValid(req.params.id);
+    if(!isValidId) return res.status(400).send('Please check user ID');
+
+    let user = await User.findById(req.params.id);
+    if(!user) return res.status(400).send('The user with the given ID was not found')
+
+    const team = await Team.findById(req.body.team)
+    if(!team) return res.status(404).send('The team with the given ID was not found');
+
+    user.team = {
+        _id: team._id,
+        team_name: team.team_name
+    }
+    
+    await user.save();
+    
+    return res.send(user);
 });
 
 
