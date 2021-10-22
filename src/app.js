@@ -1,6 +1,9 @@
 // Built-in and external imports
 const express = require('express');
 const winston = require('winston');
+const helmet = require('helmet');
+const compression = require('compression');
+
 require('dotenv').config();
 
 // Local imports
@@ -29,6 +32,8 @@ app.use('/api/auth', auth);
 app.use('/api/customers', customers);
 app.use('/api/teams', teams);
 app.use('/api/tickets', tickets)
+app.use(helmet());
+app.use(compression());
 
 // Async Errors handler 
 app.use(error);
