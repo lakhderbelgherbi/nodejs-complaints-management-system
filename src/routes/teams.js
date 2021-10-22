@@ -6,12 +6,12 @@ const { teamRegister, teamUpdate } = require('../validations/teamValidations');
 const router = express.Router();
 
 
-
+// Teams list
 router.get('/', [auth, admin], async (req, res) => {
     const teams = await Team.find();
     return res.send(teams);
 });
-
+// Retrieve team b ID
 router.get('/:id', [auth, admin], async (req, res) => {
     const team = await Team.findById(req.params.id);
     if(!team) return res.status(404).send('The team with the given ID was not found');
@@ -19,7 +19,7 @@ router.get('/:id', [auth, admin], async (req, res) => {
     return res.send(team);
 })
 
-
+// Create new team
 router.post('/',[auth, admin], async (req, res)  => {
     const { error } = teamRegister(req.body);
     if(error) return res.status(400).send(error.details[0].message);
@@ -37,7 +37,7 @@ router.post('/',[auth, admin], async (req, res)  => {
     return res.send(team);
 });
 
-
+// Update existing team
 router.put('/:id',[auth, admin], async (req, res) => {
     const { error } = teamUpdate(req.body);
     if(error) return res.status(400).send(error.details[0].message);
@@ -55,7 +55,7 @@ router.put('/:id',[auth, admin], async (req, res) => {
 });
 
 
-
+// Delete Team
 router.delete('/:id',[auth, admin], async (req, res) => {
     const team = await Team.findByIdAndRemove({_id: req.params.id});
     if(!team) return res.status(404).send('The team with the given ID was not found');

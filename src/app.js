@@ -4,9 +4,10 @@ const winston = require('winston');
 const helmet = require('helmet');
 const compression = require('compression');
 
+//Dotenv module configuration
 require('dotenv').config();
 
-// Local imports
+// Local files imports
 const error = require('./middlewares/error');
 const users = require('./routes/users');
 const auth = require('./routes/auth');
@@ -39,11 +40,6 @@ app.use(compression());
 app.use(error);
 
 
-
-
-
-
-
-
+// Connexion PORT
 const port = process.env.PORT || 5000;
 app.listen(port, () => winston.info(`App run on port ${port}`));

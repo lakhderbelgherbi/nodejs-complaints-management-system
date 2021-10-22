@@ -4,8 +4,6 @@ const crypto = require('crypto-js');
 const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
-// const multer =require('multer');
-
 
 const { User } = require('../models/user');
 const { EmailToken } = require('../models/emailToken');
@@ -22,13 +20,13 @@ const { Team } = require('../models/team');
 const router = express.Router();
 
 
-
+// Users list
 router.get('/', auth, async (req, res) => {
     const users = await User.find();
     res.send(users);
 });
 
-
+// Create new user
 router.post('/', async (req, res) => {
     const { error } = userRegistraion(req.body);
     if(error) return res.status(400).send(error.details[0].message);
@@ -64,6 +62,7 @@ router.post('/', async (req, res) => {
 });
 
 
+// Update an existing user
 router.put('/', auth, async (req, res) => {
     const { error } = userUpdateRegistraion(req.body);
     if(error) return res.status(400).send(error.details[0].message);
@@ -80,7 +79,7 @@ router.put('/', auth, async (req, res) => {
     res.send(user);
 });
 
-
+// Consume token sent to email for user sign up confirmation
 router.get('/confirmation/:email/:token', async (req, res) => {
     const token = await EmailToken.findOne({token: req.params.token});
     if(!token) return res.status(404).send('Your verification link may have expired. Please click on resend for verify your Email.')
@@ -103,7 +102,7 @@ router.get('/confirmation/:email/:token', async (req, res) => {
 
 
 
-
+// Resend link to user's email for confirmation
 router.get('/resendlink/:email', async (req, res) => {
     const user = await User.findOne({email: req.params.email});
     if(!user) return res.status(401).send('We were unable to find a user for this email. Please SignUp!');
@@ -118,7 +117,7 @@ router.get('/resendlink/:email', async (req, res) => {
 });
 
 
-
+// Reset user password
 router.post('/resetPassword', async (req, res) => {
     const { error } = passwordReset(req.body);
     if(error) return res.status(400).send(error.details[0].message);
@@ -147,7 +146,7 @@ router.post('/resetPassword', async (req, res) => {
 });
 
 
-
+// Consume token for reset password
 router.post('/passwordresetform/:email/:token', async (req, res) => {
     const { error } = passwordResetFormValidation(req.body);
     if(error) return res.status(400).send(error.details[0].message);
@@ -173,7 +172,7 @@ router.post('/passwordresetform/:email/:token', async (req, res) => {
 })
 
 
-
+// Uplaod user profile image
 router.post('/uploadFile', auth, uploadFileMiddleware, async (req, res) => {
     const file = req.file;
     if(!file) return res.status(404).send('Please upload a file.')
@@ -190,8 +189,7 @@ router.post('/uploadFile', auth, uploadFileMiddleware, async (req, res) => {
 });
 
 
-
-
+// Change User password
 router.put('/changepassword', auth, async (req, res) => {
     const { error } = changePasswordValidation(req.body);
     if(error) return res.status(400).send(error.details[0].message);
@@ -208,14 +206,14 @@ router.put('/changepassword', auth, async (req, res) => {
     res.send(user);
 });
 
-
+// Get current user
 router.get('/me', auth, async(req, res) => {
     const user = await User.findById(req.user._id).select('-password');
     res.send(user);
 });
 
 
-
+// Delete existing user
 router.delete('/:id', [auth, admin], async (req, res) => {
     const user = await User.findById(req.params.id);
     if(!user) return res.status(404).send('The user with the given ID was not fount!');
@@ -227,7 +225,7 @@ router.delete('/:id', [auth, admin], async (req, res) => {
 
 });
 
-
+// Set a role to user(default user -> agent)
 router.put('/:id/setrole', [auth, admin], async(req, res) => {
     const { error } = userSetRoleValidation(req.body);
     if(error) return res.status(400).send(error.details[0].message);
@@ -246,7 +244,7 @@ router.put('/:id/setrole', [auth, admin], async(req, res) => {
     return res.send(user);
 });
 
-
+// Set a team to user
 router.put('/:id/setteam', [auth, admin], async(req, res) => {
     const { error } = userSetTeamValidation(req.body);
     if(error) return res.status(400).send(error.details[0].message);

@@ -5,7 +5,7 @@ const uri = process.env.DB_CONNECT;
 module.exports = function(){
     mongoose.connect(uri, {
         useNewUrlParser: true,
-        useUnifiedTopology: true
-      })
+        useUnifiedTopology: true     
+    })
             .then(() => winston.info('Successfuly connected to mongoDB ....'));
 }

@@ -2,7 +2,7 @@ const crypto = require('crypto-js');
 const nodemailer = require('nodemailer');
 const { EmailToken } = require('../models/emailToken');
 
-
+// Send email function (Used Gmail Smtp)
 module.exports = async function (user, subject, emailBody){
 
         const token = crypto.lib.WordArray.random(128 / 8);

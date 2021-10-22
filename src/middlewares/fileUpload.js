@@ -1,6 +1,8 @@
 const util = require("util");
 const multer = require('multer');
 
+// files upload middleware
+
 const maxSize = 2 * 1024 * 1024;
 
 const fileFilter = (req, file, cb) =>{

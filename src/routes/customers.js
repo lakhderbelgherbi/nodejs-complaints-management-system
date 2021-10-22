@@ -4,13 +4,13 @@ const { customerRegister } = require('../validations/customerValidations');
 const auth = require('../middlewares/auth');
 const router = express.Router();
 
-
+// Customers list
 router.get('/', auth, async (req, res) => {
     const customers = await Customer.find();
     return res.send(customers);
 });
 
-
+// Create new customer
 router.post('/', auth, async (req, res) => {
     const { error } = customerRegister(req.body);
     if(error) return res.status(400).send(error.details[0].message);
@@ -32,7 +32,7 @@ router.post('/', auth, async (req, res) => {
 });
 
 
-
+// Update an existing customer
 router.put('/:id', auth, async (req, res) => {
     const { error } = customerRegister(req.body);
     if(error) return res.status(400).send(error.details[0].message);
@@ -52,7 +52,7 @@ router.put('/:id', auth, async (req, res) => {
 
 });
 
-
+// Delete customer
 router.delete('/:id', auth, async (req, res) => {
     const customer = await Customer.findByIdAndRemove(req.params.id);
     if(!customer) return res.status(404).send('The customer with the given ID was not found');
@@ -60,7 +60,7 @@ router.delete('/:id', auth, async (req, res) => {
     return res.send(customer);
 });
 
-
+// Retrieve customer by ID
 router.get('/:id', auth, async (req, res) => {
     const customer = await Customer.findById(req.params.id).select('-_id -__v');
     if(!customer) return res.status(404).send('The Customer with the given ID was not found');

@@ -1,7 +1,5 @@
 const express = require('express');
 const { Customer } = require('../models/customer');
-// const admin = require('../middlewares/admin');
-// const auth = require('../middlewares/auth');
 const { Ticket } = require('../models/ticket');
 const { Team } = require('../models/team');
 const { ticketRegister, ticketUpdate, ticketComment, ticketStatus, ticketClose } = require('../validations/ticketsValidations');
@@ -10,7 +8,7 @@ const admin = require('../middlewares/admin');
 const teamleader = require('../middlewares/teamleader');
 const router  = express.Router();
 
-
+// Tickets list
 router.get('/', [auth, admin], async (req, res) => {
     const tickets = await Ticket.find();
     res.send(tickets);
@@ -18,7 +16,7 @@ router.get('/', [auth, admin], async (req, res) => {
 
 
 
-// Get tickets by depatment
+// Get tickets by department
 router.get('/:departmentId', [auth, teamleader], async (req, res) => {
     const tickets = await Ticket.findOne({
         "departement._id": req.params.departmentId
@@ -27,7 +25,7 @@ router.get('/:departmentId', [auth, teamleader], async (req, res) => {
 });
 
 
-
+// Create new Ticket
 router.post('/', auth,async (req, res) => {
     const { error } = ticketRegister(req.body);
     if(error) return res.status(400).send(error.details[0].message);
@@ -60,7 +58,7 @@ router.post('/', auth,async (req, res) => {
 });
 
 
-
+//Update existing ticket
 router.put('/:id', auth, async (req, res) => {
     const { error } = ticketUpdate(req.body);
     if(error) return res.status(400).send(error.details[0].message);
@@ -91,7 +89,7 @@ router.put('/:id', auth, async (req, res) => {
 });
 
 
-
+// Add comment for ticket by user
 router.put('/:ticketId/commented/:userId', auth, async (req, res) => {
     const { error } = ticketComment(req.body);
     if(error) return res.status(400).send(error.details[0].message);
@@ -108,7 +106,7 @@ router.put('/:ticketId/commented/:userId', auth, async (req, res) => {
 });
 
 
-
+// Change ticket status
 router.put('/:ticketId/changestatus', auth, async(req, res) => {
     const { error } = ticketStatus(req.body);
     if(error) return res.status(400).send(error.details[0].message);
@@ -124,7 +122,7 @@ router.put('/:ticketId/changestatus', auth, async(req, res) => {
     return res.send(ticket);
 });
 
-
+// Close ticket with response
 router.put('/:ticketId/close', auth, async(req, res) => {
     const { error } = ticketClose(req.body);
     if(error) return res.status(400).send(error.details[0].message);

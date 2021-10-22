@@ -2,6 +2,7 @@ const winston = require('winston');
 require('express-async-errors');
 require('winston-mongodb');
 
+// Errors logger 
 
 const uri = process.env.DB_CONNECT;
 

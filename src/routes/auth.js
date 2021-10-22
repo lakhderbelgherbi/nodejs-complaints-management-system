@@ -8,6 +8,7 @@ const { userLogin } = require('../validations/userValidation');
 const router = express.Router();
 
 
+// Authentication router
 router.post('/', async (req, res) => {
     const { error } = userLogin(req.body);
     if(error) return res.status(400).send(error.details[0].message);
